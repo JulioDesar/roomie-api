@@ -6,8 +6,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,10 +35,8 @@ public class UsuarioController {
 	private UsuarioRepository bd;
 
 	@GetMapping("/user")
-	public Page<UsuarioDto> byName(@RequestParam(required = false) String nome, @RequestParam int pagina,
-			@RequestParam int quantidade) {
-
-		Pageable paginacao = PageRequest.of(pagina, quantidade);
+	public Page<UsuarioDto> byName(@RequestParam(required = false) String nome, 
+			@PageableDefault(sort = "id", direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) {
 
 		if (nome == null) {
 			Page<Usuario> lista = bd.findAll(paginacao);
