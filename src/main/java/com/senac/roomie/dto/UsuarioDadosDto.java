@@ -93,7 +93,6 @@ public class UsuarioDadosDto {
 
 	public Usuario convert() {
 		long cpf = Long.parseLong(CPF);
-		System.out.println(cpf);
 		return new Usuario(cpf, nome, telefone, nascimento, funcao, email, senha);
 	}
 

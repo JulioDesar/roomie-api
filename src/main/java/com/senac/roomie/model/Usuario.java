@@ -55,9 +55,6 @@ public class Usuario {
 		return CPF;
 	}
 	
-	public void setCPF(Long cPF) {
-		CPF = cPF;
-	}
 
 	public void setId(Integer id) {
 		this.id = id;
