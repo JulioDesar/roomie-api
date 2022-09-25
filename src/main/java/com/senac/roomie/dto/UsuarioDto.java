@@ -1,7 +1,6 @@
 package com.senac.roomie.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 
 import com.senac.roomie.model.TipoUsuario;
 import com.senac.roomie.model.Usuario;
@@ -36,8 +35,8 @@ public class UsuarioDto {
         return funcao;
     }
 
-    public static List<UsuarioDto> convert(List<Usuario> usuarios) {
-        return usuarios.stream().map(UsuarioDto::new).collect(Collectors.toList());
+    public static Page<UsuarioDto> convert(Page<Usuario> usuarios) {
+        return usuarios.map(UsuarioDto::new);
     }
 
 }

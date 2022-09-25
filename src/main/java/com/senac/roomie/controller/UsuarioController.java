@@ -1,11 +1,13 @@
 package com.senac.roomie.controller;
 
 import java.net.URI;
-import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -31,15 +34,18 @@ public class UsuarioController {
 	private UsuarioRepository bd;
 
 	@GetMapping("/user")
-	public List<UsuarioDto> byName(String nome) {
+	public Page<UsuarioDto> byName(@RequestParam(required = false) String nome, @RequestParam int pagina,
+			@RequestParam int quantidade) {
+
+		Pageable paginacao = PageRequest.of(pagina, quantidade);
 
 		if (nome == null) {
-			List<Usuario> lista = bd.findAll();
+			Page<Usuario> lista = bd.findAll(paginacao);
 
 			return UsuarioDto.convert(lista);
 		}
 
-		List<Usuario> lista = bd.findByName(nome);
+		Page<Usuario> lista = bd.findByName(nome, paginacao);
 		return UsuarioDto.convert(lista);
 
 	}
@@ -61,11 +67,12 @@ public class UsuarioController {
 		return ResponseEntity.created(uri).body(new UsuarioDto(user));
 
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<UsuarioDto> update(@PathVariable Integer id, @RequestBody @Valid UsuarioUpdateDto newUserData) {
+	public ResponseEntity<UsuarioDto> update(@PathVariable Integer id,
+			@RequestBody @Valid UsuarioUpdateDto newUserData) {
 		Usuario user = newUserData.atualizar(id, bd);
-		
+
 		return ResponseEntity.ok(new UsuarioDto(user));
 	}
 
