@@ -1,6 +1,7 @@
 package com.senac.roomie.controller;
 
 import java.net.URI;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -35,7 +36,7 @@ public class UsuarioController {
 	private UsuarioRepository bd;
 
 	@GetMapping("/user")
-	public Page<UsuarioDto> byName(@RequestParam(required = false) String nome, 
+	public Page<UsuarioDto> byName(@RequestParam(required = false) String nome,
 			@PageableDefault(sort = "id", direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) {
 
 		if (nome == null) {
@@ -50,9 +51,14 @@ public class UsuarioController {
 	}
 
 	@GetMapping("/{id}")
-	public UsuarioAllDto byId(@PathVariable Integer id) {
-		Usuario user = bd.getReferenceById(id);
-		return new UsuarioAllDto(user);
+	public ResponseEntity<UsuarioAllDto> byId(@PathVariable Integer id) {
+		Optional<Usuario> user = bd.findById(id);
+
+		if (user.isPresent()) {
+			return ResponseEntity.ok(new UsuarioAllDto(user.get()));
+		}
+
+		return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping("/")
