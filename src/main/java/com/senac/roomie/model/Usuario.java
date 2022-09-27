@@ -22,6 +22,7 @@ import javax.persistence.UniqueConstraint;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -39,7 +40,7 @@ public class Usuario implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "CPF")
+	@Column(name = "CPF", unique = true)
 	private Long CPF;
 
 	@Column(name = "nome")
@@ -59,7 +60,7 @@ public class Usuario implements UserDetails {
 	@Column(name = "funcao")
 	private TipoUsuario funcao;
 
-	@Column(name = "email")
+	@Column(name = "email", unique = true)
 	private String email;
 
 	@Column(name = "senha")
@@ -153,7 +154,7 @@ public class Usuario implements UserDetails {
 		this.nascimento = nascimento;
 		this.funcao = funcao;
 		this.email = email;
-		this.senha = senha;
+		this.senha = new BCryptPasswordEncoder().encode(senha);
 	}
 
 	@Override
