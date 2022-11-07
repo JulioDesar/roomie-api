@@ -7,36 +7,42 @@ import com.senac.roomie.model.Usuario;
 
 public class UsuarioDto {
 
-    private Integer id;
-    private String nome;
-    private Boolean ativo;
-    private TipoUsuario funcao;
+	private Integer id;
+	private String nome;
+	private Boolean ativo;
+	private String telefone;
+	private TipoUsuario funcao;
 
-    public UsuarioDto(Usuario user) {
-        this.id = user.getId();
-        this.nome = user.getNome();
-        this.ativo = user.getAtivo();
-        this.funcao = user.getFuncao();
-    }
+	public UsuarioDto(Usuario user) {
+		this.id = user.getId();
+		this.nome = user.getNome().toUpperCase();
+		this.telefone = user.getTelefone();
+		this.ativo = user.getAtivo();
+		this.funcao = user.getFuncao();
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public String getNome() {
-        return nome;
-    }
+	public String getNome() {
+		return nome;
+	}
 
-    public Boolean getAtivo() {
-        return ativo;
-    }
+	public String getTelefone() {
+		return telefone;
+	}
 
-    public TipoUsuario getFuncao() {
-        return funcao;
-    }
+	public Boolean getAtivo() {
+		return ativo;
+	}
 
-    public static Page<UsuarioDto> convert(Page<Usuario> usuarios) {
-        return usuarios.map(UsuarioDto::new);
-    }
+	public TipoUsuario getFuncao() {
+		return funcao;
+	}
+
+	public static Page<UsuarioDto> convert(Page<Usuario> usuarios) {
+		return usuarios.map(UsuarioDto::new);
+	}
 
 }
