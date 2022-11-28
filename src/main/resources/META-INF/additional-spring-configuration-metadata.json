@@ -23,5 +23,10 @@
     "name": "java.runtime.version",
     "type": "java.lang.String",
     "description": "A description for 'java.runtime.version'"
+  },
+  {
+    "name": "java.runtime.version",
+    "type": "java.lang.String",
+    "description": "A description for 'java.runtime.version'"
   }
 ]}
